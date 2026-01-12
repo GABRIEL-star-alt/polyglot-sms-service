@@ -86,7 +86,7 @@ Service URL: http://localhost:8081
 
 ##  API Endpoints
 
-### 📤 Send SMS (Java Producer)
+###  Send SMS (Java Producer)
 
 ```bash
 curl -X POST "http://localhost:8080/sms/send?phone=1&message=hello"
