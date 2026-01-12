@@ -1,8 +1,6 @@
 package com.example.demo.Exceptions;
 
-/**
- * Standard error response format for APIs
- */
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
