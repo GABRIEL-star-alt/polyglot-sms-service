@@ -29,7 +29,7 @@ func main() {
 		repo,
 	)
 
-	log.Println("Starting SMS Kafka Consumer...")
+	log.Println("Starting SMS Kafka Consumer")
 	go kafkaConsumer.Start(context.Background())
 	svc := service.NewSmsService(repo)
 	smsHandler := handler.NewHandler(svc)

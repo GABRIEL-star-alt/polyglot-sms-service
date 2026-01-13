@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
+import com.example.demo.model.BlockUserRequest;
+import com.example.demo.model.ApiResponse;
 
 
 @RestController
@@ -15,12 +17,26 @@ public class AdminController {
 
     private final StringRedisTemplate redisTemplate;
 
-    @PostMapping("/block/{phone}")
-    public ResponseEntity<String> blockUser(@PathVariable String phone) {
-        redisTemplate.opsForValue()
-                .set("blocked:user:" + phone, "1");
-        System.out.println("REDIS BLOCK KEY = blocked:user:" + phone);
+    @PostMapping("/block")
+    public ResponseEntity<ApiResponse> blockUser(
+            @RequestBody BlockUserRequest request) {
 
-        return ResponseEntity.accepted().body("User with phone " + phone + " has been blocked.");
+        String key = "blocked:user:" + request.getPhone();
+
+        Boolean alreadyBlocked = redisTemplate.hasKey(key);
+
+        if (Boolean.TRUE.equals(alreadyBlocked)) {
+            return ResponseEntity.ok(
+                    new ApiResponse("ALREADY_BLOCKED",
+                            "User is already blocked")
+            );
+        }
+
+        redisTemplate.opsForValue().set(key, "1");
+
+        return ResponseEntity.status(201).body(
+                new ApiResponse("BLOCKED",
+                        "User has been blocked successfully")
+        );
     }
 }

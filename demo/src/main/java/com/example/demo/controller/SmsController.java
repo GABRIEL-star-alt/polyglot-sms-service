@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.Services.SmsService;
+import com.example.demo.model.SmsRequest;
 // import com.example.demo.kafka.SmsProducer;
 import com.example.demo.model.SmsEvent;
 // import com.squareup.okhttp.Response;
@@ -18,8 +19,9 @@ public class SmsController {
 
     @PostMapping("/send")
     public ResponseEntity<?> send(
-            @RequestParam String phone,
-            @RequestParam String message) {
+            @RequestBody SmsRequest smsRequest) {
+        String phone = smsRequest.getPhoneNumber();
+        String message = smsRequest.getMessage();
 
         SmsEvent event = smsService.processSms(phone, message);
         return ResponseEntity.ok(event);
